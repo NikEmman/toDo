@@ -5,6 +5,10 @@ body {
     align-items: center;
 }
 
+button {
+    cursor: pointer;
+}
+
 .todo {
     height: 90vh;
     width: 90vw;
@@ -70,8 +74,8 @@ main {
 
 .card>div {
     padding: 0.8em;
-
 }
+
 
 .card-title {
     display: flex;
@@ -82,17 +86,52 @@ main {
     text-decoration: underline;
 }
 
+.card-title div {
+    display: flex;
+    gap: 0.7em;
+}
+
 .card-title button {
     width: 2em;
     height: 2em;
-    background-color: rgb(241, 121, 121);
     border: none;
     border-radius: 5px;
 }
 
-.card-title button:hover {
+.red {
+    background-color: rgb(241, 121, 121);
+}
+
+.red:hover {
     background-color: red;
     color: white;
+}
+
+.icon {
+    position: relative;
+    height: 1.5em;
+
+}
+
+
+.blue {
+    background-color: rgb(63, 134, 241);
+}
+
+.blue:hover {
+    background-color: blue;
+}
+
+.high {
+    color: red
+}
+
+.normal {
+    color: rgb(63, 134, 241);
+}
+
+.low {
+    color: rgb(126, 190, 73);
 }
 
 .new {
