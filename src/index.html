@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToDo</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module" src="index.js"></script>
+    <script type="module" defer src="window.js"></script>
 </head>
 
 <body>
@@ -32,11 +32,12 @@
                             <div class="card-title">
                                 <p>Item 1</p>
                                 <div>
-                                    <button class="blue"><img class="icon" src="edit.svg"></button>
+                                    <button class="blue" data-index="0" id="edit"><img class="icon"
+                                            src="edit.svg"></button>
                                     <button class="red">X</button>
                                 </div>
                             </div>
-                            <p>18:00, 30-07-2023</p>
+                            <p>2024-07-22T18:00</p>
                             <p>This is an analysis of what needs to be done</p>
                             <p class="high">High priority</p>
 
@@ -47,7 +48,7 @@
                             <div class="card-title">
                                 <p>Item 1</p>
                                 <div>
-                                    <button class="blue"><img class="icon" src="edit.svg"></button>
+                                    <button id="edit" class="blue"><img class="icon" src="edit.svg"></button>
                                     <button class="red">X</button>
                                 </div>
                             </div>
