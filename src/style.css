@@ -3,6 +3,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 button {
@@ -144,4 +145,23 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+form {
+    border: 2px solid black;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    z-index: 1;
+    position: absolute;
+    border-radius: 10px;
+}
+
+.blurred {
+    filter: blur(1.5em);
 }
