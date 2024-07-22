@@ -4,7 +4,6 @@ const LocalStorage = (function () {
         localStorage.setItem("todo", JSON.stringify(myObject));
     }
     const getStoredData = () => {
-
         if (!localStorage.getItem("todo")) {
             const defaultArray = [{ listName: "New List", title: "", date: "", descr: "", priority: "normal" }]
             storeArray(defaultArray);

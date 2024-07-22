@@ -6,6 +6,10 @@ body {
     position: relative;
 }
 
+p::first-letter {
+    text-transform: capitalize;
+}
+
 button {
     cursor: pointer;
 }
@@ -25,14 +29,10 @@ header {
     padding: 1em;
     color: white;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     background-color: blue;
 }
 
-header button {
-    width: 8%;
-    font-size: 2em;
-}
 
 main {
     display: grid;
@@ -45,7 +45,22 @@ main {
     border-right: 2px solid red;
     grid-column-start: 1;
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
 }
+
+.side-container button {
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 2em;
+    background-color: rgb(63, 134, 241);
+    width: 100%
+}
+
+
 
 .container {
     grid-column: 2/ span 3;
