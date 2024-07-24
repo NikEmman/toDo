@@ -6,11 +6,15 @@ export default function createItem(title, date, descr, priority) {
     return { title, date, descr, priority };
 
 }
-export function createList(num) {
+export function createNewList(num) {
     const list = {};
     list[`listName${num}`] = "New list";
     list["items"] = [];
 
     return list;
+}
+export function addList(object, list) {
+    Object.assign(object, list);
+    return object;
 }
 

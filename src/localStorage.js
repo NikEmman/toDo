@@ -4,13 +4,13 @@ export default function myLocalStorage() {
     }
     const getStoredData = () => {
         if (!localStorage.getItem("todo")) {
-            const defaultList = { listName: "New List", items: null }
+            const defaultList = { listName0: "New List", items: null }
             storeList(defaultList);
             return defaultList;
         }
         else {
-            // gets localStorage value, converts to object and then returns to array
-            const myTodoList = Object.values(JSON.parse(localStorage.getItem("todo")))
+
+            const myTodoList = JSON.parse(localStorage.getItem("todo"))
             return myTodoList;
         }
     }
@@ -19,11 +19,11 @@ export default function myLocalStorage() {
         stored[list].items.push(newItem);
         storeList(stored);
     }
-
+    //needs fix
     const modifyItem = (list, item) => {
         const stored = getStoredData();
         stored[list][key] = value;
         storeArray(stored);
     }
-    return { getStoredData, addItem, modifyData }
+    return { getStoredData, addItem, modifyItem }
 };
