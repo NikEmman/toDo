@@ -1,32 +1,32 @@
-import "./localStorage.js"
-import edit from "./edit.svg"
+import myLocalStorage from "./localStorage.js"
+// import edit from "./edit.svg"
 export default function domBuilder() {
     const populateDOM = () => {
-        const listItems = LocalStorage.getStoredData()
-        for (let [index, val] of listItems.entries()) {
+        const listItems = myLocalStorage().getStoredData()
+        for (let index = 0; index < listItems.length; index++) {
             const card = document.createElement("div")
             const cardContainer = document.querySelector(".card-container")
             const sideContainer = document.querySelector(".side-container")
             const newItem = document.createElement("button")
-            newItem.textContent = `${val.title}`
-            sideContainer.appendChild(newItem)
+            newItem.textContent = `${listItems[index].listName}`
+            sideContainer.prepend(newItem)
 
             card.dataset.index = index
             card.innerHTML = `<div>
                                   <div class="card-title">
-                                <p>${val.title}</p>
+                                <p>${listItems[index].title}</p>
                                 <div>
                                     <button class="blue" id="edit"><img class="icon"
-                                            src="${edit}"></button>
+                                            src="./edit.svg"></button>
                                     <button class="red">X</button>
                                 </div>
                             </div>
-                            <p>${val.date}</p>
-                            <p>${val.descr}</p>
-                            <p class="${val.priority}">${val.priority} priority</p>
+                            <p>${listItems[index].date}</p>
+                            <p>${listItems[index].descr}</p>
+                            <p class="${listItems[index].priority}">${listItems[index].priority} priority</p>
 
                         </div>`
-            cardContainer.appendChild(card)
+            cardContainer.prepend(card)
         }
     }
     return { populateDOM };

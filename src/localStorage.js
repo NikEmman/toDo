@@ -1,30 +1,29 @@
-const LocalStorage = (function () {
-    const storeArray = (array) => {
-        const myObject = Object.assign({}, array)
-        localStorage.setItem("todo", JSON.stringify(myObject));
+export default function myLocalStorage() {
+    const storeList = (list) => {
+        localStorage.setItem("todo", JSON.stringify(list));
     }
     const getStoredData = () => {
         if (!localStorage.getItem("todo")) {
-            const defaultArray = [{ listName: "New List", title: "", date: "", descr: "", priority: "normal" }]
-            storeArray(defaultArray);
-            return Object.assign({}, defaultArray);
+            const defaultList = { listName: "New List", items: null }
+            storeList(defaultList);
+            return defaultList;
         }
         else {
             // gets localStorage value, converts to object and then returns to array
-            const array = Object.values(JSON.parse(localStorage.getItem("todo")))
-            return array;
+            const myTodoList = Object.values(JSON.parse(localStorage.getItem("todo")))
+            return myTodoList;
         }
     }
-    const addData = (newItem) => {
+    const addItem = (newItem, list) => {
         const stored = getStoredData();
-        stored.push(newItem);
-        storeArray(stored);
+        stored[list].items.push(newItem);
+        storeList(stored);
     }
 
-    const modifyData = (index, key, value) => {
+    const modifyItem = (list, item) => {
         const stored = getStoredData();
-        stored[index][key] = value;
+        stored[list][key] = value;
         storeArray(stored);
     }
-    return { getStoredData, addData, modifyData }
-})();
+    return { getStoredData, addItem, modifyData }
+};
