@@ -1,29 +1,30 @@
-export default function myLocalStorage() {
-    const storeList = (list) => {
-        localStorage.setItem("todo", JSON.stringify(list));
-    }
-    const getStoredData = () => {
-        if (!localStorage.getItem("todo")) {
-            const defaultList = { listName0: "New List", items: null }
-            storeList(defaultList);
-            return defaultList;
-        }
-        else {
+import { createNewList, addList } from "./list.js";
+const storeTodos = (todos) => {
+    localStorage.setItem("todo", JSON.stringify(todos));
 
-            const myTodoList = JSON.parse(localStorage.getItem("todo"))
-            return myTodoList;
-        }
+}
+export const getStoredData = () => {
+    if (!localStorage.getItem("todo")) {
+        const todos = []
+        addList(todos, createNewList())
+        storeTodos(todos);
+        return todos;
     }
-    const addItem = (newItem, list) => {
-        const stored = getStoredData();
-        stored[list].items.push(newItem);
-        storeList(stored);
+    else {
+
+        const myTodoList = JSON.parse(localStorage.getItem("todo"))
+        return myTodoList;
     }
-    //needs fix
-    const modifyItem = (list, item) => {
-        const stored = getStoredData();
-        stored[list][key] = value;
-        storeArray(stored);
-    }
-    return { getStoredData, addItem, modifyItem }
-};
+}
+export const addItem = (newItem, list) => {
+    const stored = getStoredData();
+    stored[list].items.push(newItem);
+    storeList(stored);
+}
+//needs fix
+export const modifyItem = (list, item) => {
+    const stored = getStoredData();
+    stored[list][key] = value;
+    storeList(stored);
+}
+
