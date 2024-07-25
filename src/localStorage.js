@@ -16,15 +16,26 @@ export const getStoredData = () => {
         return myTodoList;
     }
 }
-export const addItem = (newItem, list) => {
+export const addItem = (newItem, index) => {
     const stored = getStoredData();
-    stored[list].items.push(newItem);
-    storeList(stored);
+    stored[index].items.push(newItem);
+    storeTodos(stored);
 }
-//needs fix
-export const modifyItem = (list, item) => {
-    const stored = getStoredData();
-    stored[list][key] = value;
-    storeList(stored);
+
+export const modifyItem = (listIndex, itemsIndex, item) => {
+    let stored = getStoredData();
+    stored[listIndex].items[itemsIndex] = item;
+    storeTodos(stored);
 }
+export function deleteItem(listIndex, itemIndex) {
+    let stored = getStoredData();
+    stored[listIndex].items.splice(itemIndex, 1)
+    storeTodos(stored);
+}
+export function deleteList(index) {
+    let stored = getStoredData();
+    stored.splice(index, 1)
+    storeTodos(stored)
+}
+
 

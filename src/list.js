@@ -20,4 +20,3 @@ export function addList(todos, list) {
     todos.push(list)
     return todos;
 }
-
