@@ -1,5 +1,5 @@
-import { addList } from "./list.js"
-import { getStoredData, deleteItem, deleteList, modifyItem } from "./localStorage.js"
+// import { } from "./list.js"
+import { getStoredData, deleteItem, addItem, modifyItem } from "./localStorage.js"
 // import edit from "./edit.svg"
 
 function populateLists() {
@@ -8,7 +8,7 @@ function populateLists() {
         const sideContainer = document.querySelector(".side-container")
         const newList = document.createElement("button")
         newList.textContent = `${lists[index].listName}`
-        newList.dataset.index = index
+        newList.dataset.list = index
         newList.addEventListener("click", populateItems)
         sideContainer.prepend(newList)
     }
@@ -22,7 +22,7 @@ function clearCardContainer() {
 function populateItems(e) {
     clearCardContainer();
 
-    const listIndex = e.target.dataset.index
+    const listIndex = e.target.dataset.list
     const listItems = getStoredData()[listIndex].items;
     const cardContainer = document.querySelector(".card-container")
     const containerTitle = document.querySelector(".container-title")
@@ -30,26 +30,7 @@ function populateItems(e) {
     cardContainer.dataset.list = listIndex
 
     for (let index = 0; index < listItems.length; index++) {
-        const card = document.createElement("div")
-        card.dataset.item = index
-        card.dataset.list = listIndex
-
-        card.classList.add("card")
-        card.innerHTML = `<div>
-                              <div class="card-title">
-                            <p>${listItems[index].title}</p>
-                            <div>
-                                <button class="blue" id="edit"><img id="edit" class="icon"
-                                        src="./edit.svg"></button>
-                                <button id ="del" class="red">X</button>
-                            </div>
-                        </div>
-                        <p>${listItems[index].date}</p>
-                        <p>${listItems[index].descr}</p>
-                        <p class="${listItems[index].priority}">${listItems[index].priority} priority</p>
-
-                    </div>`
-        cardContainer.prepend(card)
+        createCard(index)
     }
     //create new item button
     const card = document.createElement("div")
@@ -63,6 +44,34 @@ function populateItems(e) {
     cardContainer.appendChild(card)
 }
 
+function createCard(itemIndex, listIndex) {
+    // const cardContainer = document.querySelector(".card-container")
+    const card = document.createElement("div")
+    // const listIndex = cardContainer.dataset.list
+    card.dataset.item = itemIndex
+    card.dataset.list = listIndex
+    const stored = getStoredData()
+    const listItems = stored[listIndex].items;
+
+
+    card.classList.add("card")
+    card.innerHTML = `<div>
+                          <div class="card-title">
+                        <p>${listItems[itemIndex].title}</p>
+                        <div>
+                            <button class="blue" id="edit"><img id="edit" class="icon"
+                                    src="./edit.svg"></button>
+                            <button id ="del" class="red">X</button>
+                        </div>
+                    </div>
+                    <p>${listItems[itemIndex].date}</p>
+                    <p>${listItems[itemIndex].descr}</p>
+                    <p class="${listItems[itemIndex].priority}">${listItems[itemIndex].priority} priority</p>
+
+                </div>`
+    cardContainer.prepend(card)
+}
+
 
 const cardContainer = document.querySelector(".card-container");
 
@@ -72,19 +81,24 @@ cardContainer.addEventListener("click", (e) => {
         const title = card.querySelector(".card-title p").textContent;
         const date = card.querySelector("p:nth-child(3)").textContent;
         const descr = card.querySelector("p:nth-child(4)").textContent;
-        const priority = card.querySelector(".normal").textContent;
+        const priority = card.querySelector("p:nth-child(5)").textContent;
         const toDo = document.querySelector(".todo")
+        const form = document.querySelector("form")
+
 
         const formTitle = document.querySelector('#title');
         const formDate = document.querySelector('#date');
         const formDescr = document.querySelector('#descr');
         const formPriority = document.querySelector('#priority');
+        form.dataset.list = card.dataset.list
+        form.dataset.item = card.dataset.item
         toDo.classList.add("blurred")
         form.classList.remove("hidden")
         formTitle.value = title;
         formDate.value = date; //convert this to the correct format
         formDescr.value = descr;
         formPriority.value = priority;
+
 
     }
 });
@@ -128,21 +142,52 @@ cardContainer.addEventListener("click", (e) => {
 cardContainer.addEventListener("click", (e) => {
     if (e.target.id === "new-item") {
         const card = e.target.closest(".card"); // Find the parent card element
-        listNumber = e.target.dataset.list
-
         const todo = document.querySelector(".todo")
+        const form = document.querySelector("form")
         form.classList.remove("hidden")
         todo.classList.add("blurred")
     }
 });
+
 const saveBtn = document.getElementById("save-item")
 saveBtn.addEventListener("click", storeItem)
-function storeItem() {
-    const title = card.querySelector(".card-title p").textContent;
-    const date = card.querySelector("p:nth-child(3)").textContent;
-    const descr = card.querySelector("p:nth-child(4)").textContent;
-    const priority = card.querySelector(".normal").textContent;
+function storeItem(e) {
+    e.preventDefault()
+    const title = document.querySelector('#title');
+    const date = document.querySelector('#date');
+    const descr = document.querySelector('#descr');
+    const priority = document.querySelector('#priority');
 
+    const cardContainer = document.querySelector(".card-container")
+    const listIndex = cardContainer.dataset.list
+    const form = document.querySelector("form")
+    const toDo = document.querySelector(".todo")
+    const newItem = { title, date, descr, priority };
+
+    if (form.dataset.list !== undefined) {
+        modifyItem(form.dataset.list, form.dataset.item, newItem)
+        const card = document.querySelectorAll(`data-item='${form.dataset.item}'`)
+        const cardTitle = card.querySelector(".card-title p")
+        const cardDate = card.querySelector("p:nth-child(3)")
+        const cardDescr = card.querySelector("p:nth-child(4)")
+        const cardPriority = card.querySelector("p:nth-child(5)")
+        cardTitle.textContent = title
+        cardDate.textContent = date
+        cardDescr = descr
+        cardPriority.textContent = priority
+        cardPriority.classList.add(`${priority}`)
+
+    }
+    // if it doesnt exist
+    else {
+        addItem(newItem, listIndex)
+        const itemIndex = getStoredData()[listIndex].items.length - 1
+        createCard(itemIndex, listIndex)
+    }
+    delete form.dataset.list
+    delete form.dataset.item
+    form.classList.add("hidden")
+    toDo.classList.remove("blurred")
 }
 // add new list
 //delete list
