@@ -1,8 +1,9 @@
 
-import { getStoredData, deleteItem, addItem, modifyItem, addNewList } from "./localStorage.js"
-// import edit from "./edit.svg"
+import { getStoredData, deleteItem, addItem, modifyItem, addNewList, renameList, deleteList } from "./localStorage.js"
+import edit from "./edit.svg"
+import "./style.css"
 
-function populateLists() {
+function drawLists() {
     const lists = getStoredData()
     const sideContainer = document.querySelector(".side-container")
     sideContainer.innerHTML = ""
@@ -10,39 +11,90 @@ function populateLists() {
         const newList = document.createElement("button")
         newList.textContent = `${lists[index].listName}`
         newList.dataset.list = index
-        newList.addEventListener("click", populateItems)
+        newList.addEventListener("click", drawListItems)
         sideContainer.prepend(newList)
     }
+    createAddListBtn(sideContainer)
+}
+
+function createAddListBtn(element) {
     const addListBtn = document.createElement("button");
-    addListBtn.classList.add("add-list")
-    addListBtn.textContent = "+"
+    addListBtn.classList.add("add-list");
+    addListBtn.textContent = "+";
     addListBtn.addEventListener("click", () => {
         addNewList();
-        populateLists();
+        drawLists();
 
     })
-    sideContainer.appendChild(addListBtn)
+    element.appendChild(addListBtn)
 }
+
 function clearCardContainer() {
     const cardContainer = document.querySelector(".card-container");
     cardContainer.innerHTML = ""
 
 }
 
-function populateItems(e) {
+function drawListItems(e) {
     clearCardContainer();
 
     const listIndex = e.target.dataset.list
     const listItems = getStoredData()[listIndex].items;
-    const cardContainer = document.querySelector(".card-container")
-    const containerTitle = document.querySelector(".container-title")
-    containerTitle.textContent = getStoredData()[listIndex].listName
-    cardContainer.dataset.list = listIndex
+    const cardContainer = document.querySelector(".card-container");
+    const containerTitle = document.querySelector(".container-title");
+    createListNameElement(containerTitle, listIndex);
+    cardContainer.dataset.list = listIndex;
+
 
     for (let index = 0; index < listItems.length; index++) {
-        createCard(index, listIndex)
+        createCard(index, listIndex);
     }
-    //create new item button
+
+    createAddItemBtn(cardContainer, listIndex);
+    containerTitle.addEventListener("click", editTitle);
+    containerTitle.addEventListener("click", deleteListBtn);
+}
+function editTitle(e) {
+    if (e.target.id === "edit-title") {
+        const title = document.querySelector(".title");
+        title.focus();
+        title.selectionStart = title.textContent.length;
+        title.selectionEnd = title.textContent.length;
+    }
+}
+function createListNameElement(element, listIndex) {
+    const title = document.createElement("p");
+    title.classList.add("title");
+    title.dataset.list = listIndex
+    title.setAttribute("contenteditable", "true");
+    title.textContent = getStoredData()[listIndex].listName
+    title.addEventListener("input", () => {
+
+        const listBtn = document.querySelector(`button[data-list="${title.dataset.list}"`)
+        listBtn.textContent = title.textContent
+        renameList(title.textContent, title.dataset.list)
+
+    })
+    element.innerHTML = ""
+    element.appendChild(title)
+    element.dataset.list = listIndex
+    const buttons = document.createElement("div")
+    buttons.classList.add("list-name")
+    const renameBtn = document.createElement("button")
+    const deleteBtn = document.createElement("button")
+    renameBtn.id = ("edit-title")
+    deleteBtn.id = ("del-title")
+    deleteBtn.classList.add("red")
+    renameBtn.classList.add("blue")
+    renameBtn.innerHTML = `<img id="edit-title" class="icon"
+    src=${edit}>`
+    deleteBtn.textContent = "X"
+    buttons.appendChild(renameBtn);
+    buttons.appendChild(deleteBtn);
+    element.appendChild(buttons);
+}
+
+function createAddItemBtn(element, listIndex) {
     const card = document.createElement("div")
     card.dataset.list = listIndex
     card.classList.add("card")
@@ -51,7 +103,7 @@ function populateItems(e) {
     newBtn.dataset.list = listIndex
     newBtn.textContent = "+"
     card.appendChild(newBtn);
-    cardContainer.appendChild(card)
+    element.appendChild(card)
 }
 
 function createCard(itemIndex, listIndex) {
@@ -68,7 +120,7 @@ function createCard(itemIndex, listIndex) {
                         <p>${listItems[itemIndex].title}</p>
                         <div>
                             <button class="blue" id="edit"><img id="edit" class="icon"
-                                    src="./edit.svg"></button>
+                                    src=${edit}></button>
                             <button id ="del" class="red">X</button>
                         </div>
                     </div>
@@ -93,8 +145,6 @@ cardContainer.addEventListener("click", (e) => {
         const priority = card.querySelector("p:nth-child(4)").textContent;
         const toDo = document.querySelector(".todo")
         const form = document.querySelector("form")
-
-
         const formTitle = document.querySelector('#title');
         const formDate = document.querySelector('#date');
         const formDescr = document.querySelector('#descr');
@@ -107,8 +157,6 @@ cardContainer.addEventListener("click", (e) => {
         formDate.value = date; //convert this to the correct format
         formDescr.value = descr;
         formPriority.value = priority;
-
-
     }
 });
 
@@ -134,7 +182,7 @@ cardContainer.addEventListener("click", (e) => {
     }
 });
 
-// form ssave button
+// form save button
 const saveBtn = document.getElementById("save-item")
 saveBtn.addEventListener("click", storeItem)
 function storeItem(e) {
@@ -184,8 +232,17 @@ function storeItem(e) {
 
 
 //delete list
+function deleteListBtn(e) {
+    if (e.target.id === "del-title") {
+        const title = document.querySelector(".title")
+        const listIndex = title.dataset.list
+        const containerTitle = document.querySelector(".container-title")
+        containerTitle.innerHTML = ""
+        deleteList(listIndex);
+        drawLists();
+        clearCardContainer();
+    }
+}
 
-//rename list
-
-populateLists();
+drawLists();
 

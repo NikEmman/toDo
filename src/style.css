@@ -12,6 +12,7 @@ p::first-letter {
 
 button {
     cursor: pointer;
+    transition: all ease-in-out 0.2s;
 }
 
 .todo {
@@ -69,11 +70,22 @@ main {
 }
 
 .container-title {
+    height: 20%;
     display: flex;
-    justify-content: center;
-    font-size: xx-large;
-    font-weight: 700;
+    justify-content: space-between;
     padding: 1em;
+}
+
+.container-title div {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+}
+
+.title {
+    height: 100%;
+    font-size: 2.5em;
+    font-weight: 700;
 }
 
 .card-container {
@@ -85,7 +97,8 @@ main {
 .card {
     height: 250px;
     width: 250px;
-    border: 2px solid green;
+    border: 2px solid rgb(63, 134, 241);
+
 }
 
 .card>div {
@@ -107,7 +120,8 @@ main {
     gap: 0.7em;
 }
 
-.card-title button {
+.card-title button,
+.container-title button {
     width: 2em;
     height: 2em;
     border: none;
@@ -132,6 +146,8 @@ main {
 
 .blue {
     background-color: rgb(63, 134, 241);
+    color: white;
+
 }
 
 .blue:hover {
@@ -139,15 +155,24 @@ main {
 }
 
 .high {
-    color: red
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
 }
 
 .normal {
-    color: rgb(63, 134, 241);
+    background-color: rgb(63, 134, 241);
+    color: white;
+    text-align: center;
+    border-radius: 5px;
 }
 
 .low {
-    color: rgb(126, 190, 73);
+    background-color: rgb(126, 190, 73);
+    color: white;
+    text-align: center;
+    border-radius: 5px;
 }
 
 #new-item {

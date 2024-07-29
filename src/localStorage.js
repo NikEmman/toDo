@@ -52,4 +52,9 @@ export function deleteList(index) {
     storeTodos(stored)
 }
 
+export function renameList(name, index) {
+    let stored = getStoredData();
+    stored[index].listName = name
+    storeTodos(stored);
+}
 
