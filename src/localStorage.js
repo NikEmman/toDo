@@ -1,12 +1,26 @@
-import { createNewList, addList } from "./list.js";
+
 const storeTodos = (todos) => {
     localStorage.setItem("todo", JSON.stringify(todos));
 
 }
+
+function createList() {
+    const list = {
+        listName: "New list",
+        items: []
+    };
+
+    return list;
+}
+export function addNewList() {
+    let stored = getStoredData();
+    stored.push(createList());
+    storeTodos(stored);
+}
+
 export const getStoredData = () => {
     if (!localStorage.getItem("todo")) {
-        const todos = []
-        addList(todos, createNewList())
+        const todos = [createList()]
         storeTodos(todos);
         return todos;
     }
