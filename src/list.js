@@ -1,10 +1,3 @@
-export function createItem(title, date, descr, priority) {
-    this.title = title;
-    this.date = date;
-    this.descr = descr;
-    this.priority = priority;
-    return { title, date, descr, priority };
-}
 
 export function createNewList() {
     const list = {};

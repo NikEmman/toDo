@@ -1,4 +1,4 @@
-// import { } from "./list.js"
+
 import { getStoredData, deleteItem, addItem, modifyItem } from "./localStorage.js"
 // import edit from "./edit.svg"
 
@@ -30,7 +30,7 @@ function populateItems(e) {
     cardContainer.dataset.list = listIndex
 
     for (let index = 0; index < listItems.length; index++) {
-        createCard(index)
+        createCard(index, listIndex)
     }
     //create new item button
     const card = document.createElement("div")
@@ -79,9 +79,9 @@ cardContainer.addEventListener("click", (e) => {
     if (e.target.id === "edit") {
         const card = e.target.closest(".card"); // Find the parent card element
         const title = card.querySelector(".card-title p").textContent;
-        const date = card.querySelector("p:nth-child(3)").textContent;
-        const descr = card.querySelector("p:nth-child(4)").textContent;
-        const priority = card.querySelector("p:nth-child(5)").textContent;
+        const date = card.querySelector("p:nth-child(2)").textContent;
+        const descr = card.querySelector("p:nth-child(3)").textContent;
+        const priority = card.querySelector("p:nth-child(4)").textContent;
         const toDo = document.querySelector(".todo")
         const form = document.querySelector("form")
 
@@ -104,28 +104,28 @@ cardContainer.addEventListener("click", (e) => {
 });
 
 //card edit button function
-cardContainer.addEventListener("click", (e) => {
-    if (e.target.id === "edit") {
-        const card = e.target.closest(".card"); // Find the parent card element
-        const title = card.querySelector(".card-title p").textContent;
-        const date = card.querySelector("p:nth-child(3)").textContent;
-        const descr = card.querySelector("p:nth-child(4)").textContent;
-        const priority = card.querySelector(".normal").textContent;
-        const toDo = document.querySelector(".todo")
+// cardContainer.addEventListener("click", (e) => {
+//     if (e.target.id === "edit") {
+//         const card = e.target.closest(".card"); // Find the parent card element
+//         const title = card.querySelector(".card-title p").textContent;
+//         const date = card.querySelector("p:nth-child(3)").textContent;
+//         const descr = card.querySelector("p:nth-child(4)").textContent;
+//         const priority = card.querySelector("p:nth-child(4)").textContent;
+//         const toDo = document.querySelector(".todo")
 
-        const formTitle = document.querySelector('#title');
-        const formDate = document.querySelector('#date');
-        const formDescr = document.querySelector('#descr');
-        const formPriority = document.querySelector('#priority');
-        toDo.classList.add("blurred")
-        form.classList.remove("hidden")
-        formTitle.value = title;
-        formDate.value = date; // convert this to the correct format
-        formDescr.value = descr;
-        formPriority.value = priority;
+//         const formTitle = document.querySelector('#title');
+//         const formDate = document.querySelector('#date');
+//         const formDescr = document.querySelector('#descr');
+//         const formPriority = document.querySelector('#priority');
+//         toDo.classList.add("blurred")
+//         form.classList.remove("hidden")
+//         formTitle.value = title;
+//         formDate.value = date; // convert this to the correct format
+//         formDescr.value = descr;
+//         formPriority.value = priority;
 
-    }
-});
+//     }
+// });
 
 //card delete button function
 cardContainer.addEventListener("click", (e) => {
@@ -153,29 +153,30 @@ const saveBtn = document.getElementById("save-item")
 saveBtn.addEventListener("click", storeItem)
 function storeItem(e) {
     e.preventDefault()
-    const title = document.querySelector('#title');
-    const date = document.querySelector('#date');
-    const descr = document.querySelector('#descr');
-    const priority = document.querySelector('#priority');
+    const formTitle = document.querySelector('#title');
+    const formDate = document.querySelector('#date');
+    const formDescr = document.querySelector('#descr');
+    const formPriority = document.querySelector('#priority');
 
     const cardContainer = document.querySelector(".card-container")
     const listIndex = cardContainer.dataset.list
     const form = document.querySelector("form")
     const toDo = document.querySelector(".todo")
-    const newItem = { title, date, descr, priority };
+    const newItem = { title: formTitle.value, date: formDate.value, descr: formDescr.value, priority: formPriority.value };
 
     if (form.dataset.list !== undefined) {
         modifyItem(form.dataset.list, form.dataset.item, newItem)
-        const card = document.querySelectorAll(`data-item='${form.dataset.item}'`)
+        const card = document.querySelectorAll(`[data-item="${form.dataset.item}"]`)[0]
         const cardTitle = card.querySelector(".card-title p")
-        const cardDate = card.querySelector("p:nth-child(3)")
-        const cardDescr = card.querySelector("p:nth-child(4)")
-        const cardPriority = card.querySelector("p:nth-child(5)")
-        cardTitle.textContent = title
-        cardDate.textContent = date
-        cardDescr = descr
-        cardPriority.textContent = priority
-        cardPriority.classList.add(`${priority}`)
+        const cardDate = card.querySelector("p:nth-child(2)")
+        const cardDescr = card.querySelector("p:nth-child(3)")
+        const cardPriority = card.querySelector("p:nth-child(4)")
+        cardTitle.textContent = formTitle.value
+        cardDate.textContent = formDate.value
+        cardDescr.textContent = formDescr.value
+        cardPriority.textContent = formPriority.value + " priority"
+        cardPriority.classList.remove(...cardPriority.classList)
+        cardPriority.classList.add(`${formPriority.value}`)
 
     }
     // if it doesnt exist
