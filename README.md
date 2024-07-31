@@ -8,3 +8,7 @@ It lets you store locally(your web browser) lists of things to do. Each list con
 
 ###
 Project specs defined by [The Odin Project](https://www.theodinproject.com/lessons/javascript-todo-list) curriculum
+
+### Resources
+
+Background photo by [fotor](https://www.fotor.com/)

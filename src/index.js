@@ -115,6 +115,7 @@ function createCard(itemIndex, listIndex) {
 
 
     card.classList.add("card")
+    card.classList.add(`${listItems[itemIndex].priority}-card`)
     card.innerHTML = `<div>
                           <div class="card-title">
                         <p>${listItems[itemIndex].title}</p>

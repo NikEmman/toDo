@@ -40,6 +40,8 @@ main {
     grid-template-columns: repeat(4, 1fr);
     height: 100%;
     overflow: hidden;
+    background-image: url(yellow.jpg);
+    background-size: cover;
 }
 
 .side-container {
@@ -58,7 +60,13 @@ main {
     padding: 5px;
     font-size: 2em;
     background-color: rgb(63, 134, 241);
-    width: 100%
+    width: 100%;
+    transform: scale(1);
+    transition: ease-in-out 0.8s;
+}
+
+.side-container button:hover {
+    transform: scale(1.1);
 }
 
 
@@ -67,6 +75,7 @@ main {
     grid-column: 2/ span 3;
     padding: 1em;
     overflow: auto;
+
 }
 
 .container-title {
@@ -97,8 +106,21 @@ main {
 .card {
     height: 250px;
     width: 250px;
-    border: 2px solid rgb(63, 134, 241);
 
+    border-radius: 8px;
+
+}
+
+.high-card {
+    border: 2px solid red;
+}
+
+.normal-card {
+    border: 2px solid rgb(63, 134, 241);
+}
+
+.low-card {
+    border: 2px solid green;
 }
 
 .card>div {
@@ -185,6 +207,16 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: scale(0.3);
+    transition: ease-in-out 0.8s;
+    background-color: rgb(63, 134, 241);
+    border-radius: 10px;
+    color: white;
+}
+
+#new-item:hover {
+    transform: scale(1);
+
 }
 
 .hidden {
