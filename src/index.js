@@ -1,5 +1,6 @@
 
 import { getStoredData, deleteItem, addItem, modifyItem, addNewList, renameList, deleteList } from "./localStorage.js"
+import { makeReadable, convertBack } from "./timeConverter.js"
 import edit from "./edit.svg"
 import "./style.css"
 
@@ -155,7 +156,7 @@ cardContainer.addEventListener("click", (e) => {
         toDo.classList.add("blurred")
         form.classList.remove("hidden")
         formTitle.value = title;
-        formDate.value = date; //convert this to the correct format
+        formDate.value = convertBack(date);
         formDescr.value = descr;
         formPriority.value = priority;
     }
@@ -197,18 +198,21 @@ function storeItem(e) {
     const listIndex = cardContainer.dataset.list
     const form = document.querySelector("form")
     const toDo = document.querySelector(".todo")
-    const newItem = { title: formTitle.value, date: formDate.value, descr: formDescr.value, priority: formPriority.value };
+    const newItem = { title: formTitle.value, date: makeReadable(formDate.value), descr: formDescr.value, priority: formPriority.value };
 
     //if item exists
     if (form.dataset.list !== undefined) {
         modifyItem(form.dataset.list, form.dataset.item, newItem)
         const card = document.querySelectorAll(`[data-item="${form.dataset.item}"]`)[0]
+        card.classList.remove(...card.classList)
+        card.classList.add("card")
+        card.classList.add(`${formPriority.value}-card`)
         const cardTitle = card.querySelector(".card-title p")
         const cardDate = card.querySelector("p:nth-child(2)")
         const cardDescr = card.querySelector("p:nth-child(3)")
         const cardPriority = card.querySelector("p:nth-child(4)")
         cardTitle.textContent = formTitle.value
-        cardDate.textContent = formDate.value
+        cardDate.textContent = makeReadable(formDate.value)
         cardDescr.textContent = formDescr.value
         cardPriority.textContent = formPriority.value + " priority"
         cardPriority.classList.remove(...cardPriority.classList)

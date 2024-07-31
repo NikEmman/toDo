@@ -31,7 +31,7 @@ header {
     color: white;
     display: flex;
     justify-content: center;
-    background-color: blue;
+    background-color: rgb(63, 134, 241);
 }
 
 
@@ -45,7 +45,7 @@ main {
 }
 
 .side-container {
-    border-right: 2px solid red;
+    border-right: 10px solid rgb(63, 134, 241);
     grid-column-start: 1;
     padding: 1em;
     display: flex;
@@ -67,6 +67,12 @@ main {
 
 .side-container button:hover {
     transform: scale(1.1);
+    background-color: blue;
+    color: white;
+}
+
+.side-container button::first-letter {
+    text-transform: capitalize;
 }
 
 
